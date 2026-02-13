@@ -55,13 +55,13 @@ class pose_publisher(Node):
         )
         self.get_logger().info('Created publisher: /gary/goal_pose')
         
-        # Rule output publisher (/gary/rule_output)
+        # Rule output publisher (/rule_output)
         self.rule_output_pub = self.create_publisher(
             String,
-            '/gary/rule_output',
+            '/rule_output',
             self.qos_profile
         )
-        self.get_logger().info('Created publisher: /gary/rule_output')
+        self.get_logger().info('Created publisher: /rule_output')
         
         # Dock status publisher (/dock_status)
         self.dock_status_pub = self.create_publisher(
@@ -164,16 +164,15 @@ class pose_publisher(Node):
                 time.sleep(interval_sec)
         
         self.get_logger().info('All sample goals published successfully')
-
     
-    """
     def publish_dock_status(self, is_docked: bool = True) -> None:
+        """
         Publishes a docking status to the /dock_status topic.
-
+        
         Args:
             is_docked: Whether the robot is docked (True) or undocked (False)
-
-                    dock_msg = DockStatus()
+        """
+        dock_msg = DockStatus()
         dock_msg.header.stamp = self.get_clock().now().to_msg()
         dock_msg.header.frame_id = 'base_link'
         dock_msg.is_docked = is_docked
@@ -183,10 +182,6 @@ class pose_publisher(Node):
         status = "docked" if is_docked else "undocked"
         self.get_logger().info(f'Published dock status: {status}')
     
-    
-    """
-    
-  
     def publish_stop_command(self) -> None:
         """
         Publishes zero velocity to /cmd_vel to immediately stop the robot.
@@ -296,7 +291,7 @@ def main(args=None):
             {'x': 3.0, 'y': 3.0, 'z': 0.0},
         ]
         publisher.publish_odometry_sequence(odom_positions, interval_sec=1.0)
-        """
+        
         # Example: publish dock status
         publisher.get_logger().info('\nPublishing undock status...')
         publisher.publish_dock_status(is_docked=False)
@@ -305,7 +300,7 @@ def main(args=None):
         
         publisher.get_logger().info('\nPublishing dock status...')
         publisher.publish_dock_status(is_docked=True)
-        """
+        
         # Example: publish stop command
         time.sleep(1.0)
         publisher.get_logger().info('\nPublishing stop command...')
